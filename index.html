@@ -1,0 +1,97 @@
+<html>
+<script type="text/javascript" src="dist/brauhaus.min.js"></script>
+<!-- Plugins go here... -->
+<script type="text/javascript" src="dist/brauhaus-styles.min.js"></script>
+latest brew:
+<pre id="calc1"></pre>
+<script type="text/javascript">
+    // Your code goes here!
+    // See below for an example...
+// Create a recipe
+var b38 = new Brauhaus.Recipe({
+    name: 'batch #38',
+    description: 'random pale ale',
+    batchSize: 15.0,
+    boilSize: 15.0
+});
+
+b38.add('fermentable', {
+    name: 'viking pale malt',
+    color: 4,
+    weight: 1.5,
+    yield: 80
+});
+
+
+b38.add('fermentable', {
+    name: 'viking pilsener malt',
+    color: 3.5,
+    weight: 1.5,
+    yield: 80
+});
+
+b38.add('fermentable', {
+    name: 'viking caramel 600',
+    color: 600,
+    weight: 0.1,
+    yield: 68
+});
+
+b38.add('hop', {
+    name: 'Sybilla hops',
+    weight: 0.020,
+    aa: 4.7,
+    use: 'boil',
+    form: 'pellet'
+});
+
+b38.add('hop', {
+    name: 'Tomahawk hops',
+    weight: 0.020,
+    aa: 15,
+    use: 'boil',
+    form: 'pellet'
+});
+
+b38.add('yeast', {
+    name: 'US-05',
+    type: 'ale',
+    form: 'dry',
+    attenuation: 75
+});
+
+//b38.calculate();
+
+b38.mash = new Brauhaus.Mash({
+    name: 'batch 38',
+    // ph: 5.4
+}); 
+
+/* b38.mash.addStep({
+    name: 'Saccharification',
+    type: 'Infusion',
+    time: 50,
+    temp: 68,
+    waterRatio: 5
+}); */
+
+b38.calculate();
+
+outel = document.getElementById("calc1"); 
+
+outel.innerHTML += ('Original Gravity: ' + b38.ogPlato.toFixed(3)) + "\n";
+outel.innerHTML += ('Final Gravity: ' + b38.fgPlato.toFixed(3)) + "\n";
+outel.innerHTML += ('Color: ' + b38.color.toFixed(1) + '&deg; SRM (' + b38.colorName() + ')') + "\n";
+outel.innerHTML += ('IBU: ' + b38.ibu.toFixed(1)) + "\n";
+outel.innerHTML += ('Alcohol: ' + b38.abv.toFixed(1) + '% by volume') + "\n";
+outel.innerHTML += ('Calories: ' + Math.round(b38.calories) + ' kcal') + "\n";
+
+steps = b38.timeline();
+for (var step in steps) {
+    outel.innerHTML +=  (steps[step][0]>1000?(steps[step][0]/60/24).toFixed(0)+" d:\t":steps[step][0].toFixed(0)+" m:\t")+steps[step][1]+ "\n";
+}
+
+// b37 -> wheat pale ale (white caps)
+
+</script>
+</html>
